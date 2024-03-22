@@ -1,0 +1,10 @@
+# Normalize as LF in the repository, OS native locally
+* text=auto
+*.cs text
+*.bat text
+*.md text
+*.sln text
+*.csproj text
+*.json text
+
+*.png binary

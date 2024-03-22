@@ -1,0 +1,15 @@
+repos:
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.5.0
+      hooks:
+          - id: end-of-file-fixer
+          - id: trailing-whitespace
+          - id: check-case-conflict
+          - id: fix-byte-order-marker
+          - id: mixed-line-ending
+            args: [ --fix=crlf ]
+    - repo: https://github.com/dotnet/format
+      rev: v8.0.453106
+      hooks:
+          - id: dotnet-format
+            args: [ "--check" ]

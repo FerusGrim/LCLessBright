@@ -1,0 +1,7 @@
+.idea/
+bin/
+obj/
+libs/
+package/LessBright.dll
+package/LessBright-*.zip
+deploy.props
