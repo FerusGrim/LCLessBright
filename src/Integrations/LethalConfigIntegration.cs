@@ -10,7 +10,7 @@ internal static class LethalConfigIntegration
 {
     public static void Initialize()
     {
-        Log.Info("LethalConfig detected, integrating...");
+        RegistryButtonEntry("Actions", "Toggle Light", "Manually toggle the light", () => { Compat.ThirdPartyToggleTriggered = true; });
 
         RegisterFloatEntry(Configs.Intensity!.Entry, Configs.Min.Intensity, Configs.Max.Intensity,
             Configs.Step.Intensity);
@@ -27,6 +27,12 @@ internal static class LethalConfigIntegration
         RegisterFloatEntry(Configs.OffsetX!.Entry, Configs.Min.OffsetX, Configs.Max.OffsetX, Configs.Step.OffsetX);
         RegisterFloatEntry(Configs.OffsetY!.Entry, Configs.Min.OffsetY, Configs.Max.OffsetY, Configs.Step.OffsetY);
         RegisterFloatEntry(Configs.OffsetZ!.Entry, Configs.Min.OffsetZ, Configs.Max.OffsetZ, Configs.Step.OffsetZ);
+    }
+
+    private static void RegistryButtonEntry(string section, string name, string description,
+        GenericButtonOptions.GenericButtonHandler handler)
+    {
+        AddConfigItem(new GenericButtonConfigItem(section, name, description, name, handler));
     }
 
     private static void RegisterFloatEntry(ConfigEntry<float> entry, float min, float max, float step)

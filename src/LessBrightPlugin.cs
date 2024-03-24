@@ -15,9 +15,6 @@ public class LessBrightPlugin : BaseUnityPlugin
     private void Awake()
     {
         Configs.Initialize(Config);
-
-        Log.Info("Activating LessBright...");
-
         _harmony.PatchAll(typeof(PlayerControllerBPatches));
     }
 }

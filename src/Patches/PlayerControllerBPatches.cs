@@ -13,57 +13,62 @@ public class PlayerControllerBPatches
 {
     private const string FlashlightKey = "LessBright_Flashlight";
 
+    private static Light? flashlight;
+
     [HarmonyPatch("Start")]
     [HarmonyPostfix]
-    private static void PostFixStart(PlayerControllerB __instance)
+    private static void PostFixStart(ref PlayerControllerB __instance)
     {
-        InitializeFlashLight(__instance.playerEye.gameObject);
+        if (Checks.IsNotLocalPlayer(__instance)) return;
+        if (flashlight) throw new Exception("Flashlight already exists");
+        if (!GetFlashlightComponent(__instance)) throw new Exception("Failed to create flashlight component");
     }
 
     [HarmonyPatch("Update")]
     [HarmonyPostfix]
-    private static void PostFixUpdate(ref Transform ___playerEye)
+    private static void PostFixUpdate(ref PlayerControllerB __instance)
     {
-        var flashlight = ___playerEye.Find(FlashlightKey).GetComponent<Light>();
+        if (Checks.IsNotLocalPlayer(__instance)) return;
+
+        var localFlashlight = GetFlashlightComponent(__instance);
+        if (!localFlashlight) throw new Exception("Failed to create flashlight component");
+
         if (Compat.IsToggleNightVisionTriggered())
         {
-            var nextState = !flashlight.gameObject.activeSelf;
-            Log.Info($"Flashlight toggled: {(nextState ? "ON" : "OFF")}");
-            flashlight.gameObject.SetActive(nextState);
+            var nextState = !localFlashlight.gameObject.activeSelf;
+            localFlashlight.gameObject.SetActive(nextState);
+            localFlashlight.enabled = nextState;
         }
 
-        UpdateFlashLight(flashlight);
+        localFlashlight.intensity = Configs.Intensity!.GetValue();
+        localFlashlight.spotAngle = Configs.SpotAngle!.GetValue();
+        localFlashlight.innerSpotAngle = Configs.InnerSpotAngle!.GetValue();
+        localFlashlight.bounceIntensity = Configs.BounceIntensity!.GetValue();
+        localFlashlight.shadows = Configs.ShadowType!.GetValue();
+        localFlashlight.shadowStrength = Configs.ShadowStrength!.GetValue();
+        localFlashlight.color = Configs.TranslateColor();
+
+        localFlashlight.transform.localPosition = new Vector3(Configs.OffsetX!.GetValue(), Configs.OffsetY!.GetValue(), Configs.OffsetZ!.GetValue());
     }
 
-    private static void InitializeFlashLight(GameObject gameObject)
+    private static Light GetFlashlightComponent(PlayerControllerB controller)
     {
-        var flashlightObject = new GameObject(FlashlightKey);
-        flashlightObject.SetActive(true);
+        if (flashlight) return flashlight!;
 
-        var flashlight = flashlightObject.AddComponent<Light>();
-        var flashlightTransform = flashlight.transform;
-        flashlightTransform.SetParent(gameObject.transform);
+        var gameObject = new GameObject(FlashlightKey);
+        gameObject.SetActive(true);
+        var localFlashlight = gameObject.AddComponent<Light>();
+        localFlashlight.enabled = true;
 
-        flashlightTransform.rotation = Quaternion.LookRotation(gameObject.transform.forward);
+        var transform = gameObject.transform;
+        transform.SetParent(controller.playerEye.transform);
+        transform.rotation = Quaternion.LookRotation(controller.playerEye.transform.forward);
 
-        flashlight.type = LightType.Spot;
-        flashlight.range = 100_000F;
-        flashlight.enabled = true;
+        localFlashlight.type = LightType.Spot;
+        localFlashlight.range = 100_000F;
+        localFlashlight.enabled = true;
 
-        UpdateFlashLight(flashlight);
-    }
-
-    private static void UpdateFlashLight(Light flashlight)
-    {
-        flashlight.intensity = Configs.Intensity!.GetValue();
-        flashlight.spotAngle = Configs.SpotAngle!.GetValue();
-        flashlight.innerSpotAngle = Configs.InnerSpotAngle!.GetValue();
-        flashlight.bounceIntensity = Configs.BounceIntensity!.GetValue();
-        flashlight.shadows = Configs.ShadowType!.GetValue();
-        flashlight.shadowStrength = Configs.ShadowStrength!.GetValue();
-        flashlight.color = Configs.TranslateColor();
-
-        flashlight.transform.localPosition = new Vector3(Configs.OffsetX!.GetValue(), Configs.OffsetY!.GetValue(),
-            Configs.OffsetZ!.GetValue());
+        flashlight = localFlashlight;
+        return flashlight;
     }
 }

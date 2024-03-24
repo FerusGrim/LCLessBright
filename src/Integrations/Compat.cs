@@ -11,8 +11,14 @@ internal static class Compat
 
     private static InputAction NightVisionToggleKey => InputUtilsIntegration.Instance.NightVisionToggleKey;
 
+    public static bool ThirdPartyToggleTriggered { get; set; }
+
     public static bool IsToggleNightVisionTriggered()
     {
-        return InputUtils ? NightVisionToggleKey.triggered : Keyboard.current[Key.F].wasPressedThisFrame;
+        if (!ThirdPartyToggleTriggered)
+            return InputUtils ? NightVisionToggleKey.triggered : Keyboard.current[Key.F].wasPressedThisFrame;
+
+        ThirdPartyToggleTriggered = false;
+        return true;
     }
 }

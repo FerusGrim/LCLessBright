@@ -1,4 +1,3 @@
-using LessBright.Utils;
 using LethalCompanyInputUtils.Api;
 using UnityEngine.InputSystem;
 
@@ -12,7 +11,6 @@ internal class InputUtilsIntegration : LcInputActions
 
     public override void CreateInputActions(in InputActionMapBuilder builder)
     {
-        Log.Info("Detected InputUtils, integrating...");
         builder.NewActionBinding()
             .WithActionId("toggleNightVision")
             .WithActionType(InputActionType.Button)

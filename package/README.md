@@ -23,12 +23,14 @@ See also, the Unity Manual entry for [Light][2].
 
 ## Integration
 
-- [LethalConfig][5] is an **optional** integration that allows you to edit the configuration in-game. Without it, you will still be able to edit the configs via whichever method you usually use outside of game.
-- [InputUtils][6] is an **optional** integration that allows you to rebind the key used to toggle the light source on and off. Without it, the default key is `F`.
+- [LethalConfig][5] is an **optional** integration that allows you to edit the configuration in-game. Without it, you will still be able to
+  edit the configs via whichever method you usually use outside of game.
+- [InputUtils][6] is an **optional** integration that allows you to rebind the key used to toggle the light source on and off. Without it,
+  the default key is `F`.
 
 [1]: https://thunderstore.io/c/lethal-company/p/OndysWorks/FullBright/ "FullBright Thunderstore Page"
 [2]: https://docs.unity3d.com/Manual/class-Light.html "Unity Documentation: Light"
 [3]: https://docs.unity3d.com/ScriptReference/LightShadows.html "Unity Documentation: LightShadows"
-[4]: ../Utils/Configs.cs "Configs.PresetColor"
+[4]: ../src/Utils/Configs.cs "Configs.PresetColor"
 [5]: https://thunderstore.io/c/lethal-company/p/AinaVT/LethalConfig/ "LethalConfig Thunderstore Page"
 [6]: https://thunderstore.io/c/lethal-company/p/Rune580/LethalCompany_InputUtils/ "InputUtils Thunderstore Page"

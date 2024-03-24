@@ -33,56 +33,6 @@ internal static class Configs
     public static WrappedConfigEntry<float>? OffsetY;
     public static WrappedConfigEntry<float>? OffsetZ;
 
-    public static readonly Preset Min = new()
-    {
-        Intensity = 0F,
-        SpotAngle = 0F,
-        InnerSpotAngle = 0F,
-        BounceIntensity = 0F,
-        ShadowStrength = 0F,
-        OffsetX = -5F,
-        OffsetY = -5F,
-        OffsetZ = -5F
-    };
-
-    public static readonly Preset Max = new()
-    {
-        Intensity = 1_000F,
-        SpotAngle = 120F,
-        InnerSpotAngle = 90F,
-        ShadowStrength = 1F,
-        BounceIntensity = 1F,
-        OffsetX = 5F,
-        OffsetY = 5F,
-        OffsetZ = 5F
-    };
-
-    public static readonly Preset Step = new()
-    {
-        Intensity = 10F,
-        SpotAngle = 1F,
-        InnerSpotAngle = 1F,
-        ShadowStrength = 0.01F,
-        BounceIntensity = 0.01F,
-        OffsetX = 0.1F,
-        OffsetY = 0.1F,
-        OffsetZ = 0.1F
-    };
-
-    private static readonly Preset Default = new()
-    {
-        Intensity = 250F,
-        SpotAngle = 75F,
-        InnerSpotAngle = 30F,
-        BounceIntensity = Max.BounceIntensity,
-        ShadowType = LightShadows.Soft,
-        ShadowStrength = Max.ShadowStrength,
-        Color = PresetColor.White,
-        OffsetX = 0F,
-        OffsetY = 0.75F,
-        OffsetZ = 0F
-    };
-
     public static void Initialize(ConfigFile config)
     {
         _config = config;
@@ -128,7 +78,61 @@ internal static class Configs
         return new WrappedConfigEntry<T>(_config!.Bind(section, key, defaultValue, description));
     }
 
-    public class WrappedConfigEntry<T>(ConfigEntry<T> entry)
+    [SuppressMessage("ReSharper", "MemberHidesStaticFromOuterClass")]
+    public static class Min
+    {
+        public const float Intensity = 0F;
+        public const float SpotAngle = 0F;
+        public const float InnerSpotAngle = 0F;
+        public const float BounceIntensity = 0F;
+        public const float ShadowStrength = 0F;
+        public const float OffsetX = -5F;
+        public const float OffsetY = -5F;
+        public const float OffsetZ = -5F;
+    }
+
+    [SuppressMessage("ReSharper", "MemberHidesStaticFromOuterClass")]
+    public static class Max
+    {
+        public const float Intensity = 1_000F;
+        public const float SpotAngle = 120F;
+        public const float InnerSpotAngle = 90F;
+        public const float BounceIntensity = 1F;
+        public const float ShadowStrength = 1F;
+        public const float OffsetX = 5F;
+        public const float OffsetY = 5F;
+        public const float OffsetZ = 5F;
+    }
+
+    [SuppressMessage("ReSharper", "MemberHidesStaticFromOuterClass")]
+    public static class Step
+    {
+        public const float Intensity = 1F;
+        public const float SpotAngle = 1F;
+        public const float InnerSpotAngle = 1F;
+        public const float BounceIntensity = 0.01F;
+        public const float ShadowStrength = 0.01F;
+        public const float OffsetX = 0.1F;
+        public const float OffsetY = 0.1F;
+        public const float OffsetZ = 0.1F;
+    }
+
+    [SuppressMessage("ReSharper", "MemberHidesStaticFromOuterClass")]
+    public static class Default
+    {
+        public const float Intensity = 250F;
+        public const float SpotAngle = 75F;
+        public const float InnerSpotAngle = 30F;
+        public const float BounceIntensity = Max.BounceIntensity;
+        public const LightShadows ShadowType = LightShadows.Soft;
+        public const float ShadowStrength = Max.ShadowStrength;
+        public const PresetColor Color = PresetColor.White;
+        public const float OffsetX = 0F;
+        public const float OffsetY = 0.75F;
+        public const float OffsetZ = 0F;
+    }
+
+    public class WrappedConfigEntry<T>(ConfigEntry<T> entry) : IWrappedConfigEntry
     {
         public ConfigEntry<T> Entry => entry;
 
@@ -138,18 +142,5 @@ internal static class Configs
         }
     }
 
-    [SuppressMessage("ReSharper", "MemberHidesStaticFromOuterClass")]
-    public struct Preset
-    {
-        public float Intensity;
-        public float SpotAngle;
-        public float InnerSpotAngle;
-        public float BounceIntensity;
-        public LightShadows ShadowType;
-        public float ShadowStrength;
-        public PresetColor Color;
-        public float OffsetX;
-        public float OffsetY;
-        public float OffsetZ;
-    }
+    public interface IWrappedConfigEntry;
 }

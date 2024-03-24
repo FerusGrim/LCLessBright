@@ -4,6 +4,7 @@ using BepInEx.Logging;
 namespace LessBright.Utils;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 internal static class Log
 {
     private static readonly ManualLogSource LogSource = Logger.CreateLogSource(Metadata.PluginGuid);
