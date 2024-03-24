@@ -1,6 +1,6 @@
 @echo off
 
-set version=1.0.0
+set version=1.1.0
 
 set scriptDir=%~dp0
 set rootDir=%scriptDir%..
