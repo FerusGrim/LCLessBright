@@ -1,22 +1,12 @@
 @echo off
 
 set version=1.1.0
+set projectDir=%~dp0..
+set packageDir=%projectDir%\package
 
-set scriptDir=%~dp0
-set rootDir=%scriptDir%..
-set targetDll=%rootDir%\bin\Release\net48\LessBright.dll
-set destDir=%rootDir%\package
-set zipDest=%rootDir%\package\LessBright-%version%.zip
+del %packageDir%\LessBright.dll
+del %packageDir%\LessBright-*.zip
 
-if exist %destDir%\LessBright.dll del %destDir%\LessBright.dll
+copy %projectDir%\bin\net48\LessBright.dll %packageDir%
 
-echo Deploying: %targetDll%
-echo Destination: %destDir%
-copy %targetDll% %destDir%
-
-if exist %zipDest% del %zipDest%
-
-echo Zipping: %zipDest%
-powershell Compress-Archive -Path %destDir%\* -DestinationPath %zipDest%
-
-echo Packaging complete
+powershell Compress-Archive -Path %packageDir%\* -DestinationPath %packageDir%\LessBright-%version%.zip
