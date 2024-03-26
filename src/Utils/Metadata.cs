@@ -4,7 +4,7 @@ internal static class Metadata
 {
     public const string PluginGuid = "Ferus.LessBright";
     public const string PluginName = "LessBright";
-    public const string PluginVersion = "1.1.0";
+    public const string PluginVersion = "1.2.0";
 
     internal static class Dependencies
     {
