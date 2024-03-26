@@ -25,6 +25,12 @@ public class WrappedConfigEntry<TType, TMapped>
         return wrappedConfigEntry.MappedValue;
     }
 
+    public static WrappedConfigEntry<int, int> BasicInt(string section, string key, string description, int defaultValue)
+    {
+        var configEntry = LessBright.Config.Bind(section, key, defaultValue, description);
+        return new WrappedConfigEntry<int, int>(configEntry, x => x);
+    }
+
     public static WrappedConfigEntry<float, float> BasicFloat(string section, string key, string description, float defaultValue)
     {
         var configEntry = LessBright.Config.Bind(section, key, defaultValue, description);

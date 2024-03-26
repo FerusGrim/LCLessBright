@@ -5,6 +5,16 @@ namespace LessBright.Config;
 
 public static class WrappedConfigEntryToConfigItemExtension
 {
+    public static BaseConfigItem ToIntConfigItem<TMapped>(this WrappedConfigEntry<int, TMapped> entry, int min, int max)
+    {
+        return new IntSliderConfigItem(entry, new IntSliderOptions
+        {
+            Min = min,
+            Max = max,
+            RequiresRestart = false
+        });
+    }
+
     public static BaseConfigItem ToFloatConfigItem<TMapped>(this WrappedConfigEntry<float, TMapped> entry, float min, float max, float step)
     {
         return new FloatStepSliderConfigItem(entry, new FloatStepSliderOptions

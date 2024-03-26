@@ -12,18 +12,17 @@ internal static class LethalConfigIntegration
         RegisterButtonEntry("Actions", "Toggle Light", "Manually toggle the light", () => { Compat.ThirdPartyToggleTriggered = true; });
 
         // Basic
-        RegisterFloatEntry(Configs.Intensity, Ranges.Intensity);
-        RegisterFloatEntry(Configs.Range, Ranges.Range);
-        RegisterFloatEntry(Configs.SpotAngle, Ranges.SpotAngle);
+        RegisterIntEntry(Configs.Intensity, Ranges.Intensity);
+        RegisterIntEntry(Configs.Range, Ranges.Range);
+        RegisterIntEntry(Configs.SpotAngle, Ranges.SpotAngle);
         RegisterTextEntry(Configs.Color);
 
         // Positioning
-        RegisterFloatEntry(Configs.PosOffsetX, Ranges.PosOffsetX);
-        RegisterFloatEntry(Configs.PosOffsetY, Ranges.PosOffsetY);
-        RegisterFloatEntry(Configs.PosOffsetZ, Ranges.PosOffsetZ);
-        RegisterFloatEntry(Configs.RotOffsetX, Ranges.RotOffsetX);
-        RegisterFloatEntry(Configs.RotOffsetY, Ranges.RotOffsetY);
-        RegisterFloatEntry(Configs.RotOffsetZ, Ranges.RotOffsetZ);
+        RegisterFloatEntry(Configs.OffsetX, Ranges.OffsetX);
+        RegisterFloatEntry(Configs.OffsetY, Ranges.OffsetY);
+        RegisterFloatEntry(Configs.OffsetZ, Ranges.OffsetZ);
+        RegisterIntEntry(Configs.Pitch, Ranges.Pitch);
+        RegisterIntEntry(Configs.Yaw, Ranges.Yaw);
     }
 
     private static void RegisterButtonEntry(string section, string name, string description,
@@ -35,6 +34,11 @@ internal static class LethalConfigIntegration
     private static void RegisterTextEntry<TMapped>(WrappedConfigEntry<string, TMapped> entry)
     {
         AddConfigItem(entry.ToTextConfigItem());
+    }
+
+    private static void RegisterIntEntry<TMapped>(WrappedConfigEntry<int, TMapped> entry, IntRange range)
+    {
+        AddConfigItem(entry.ToIntConfigItem(range.Min, range.Max));
     }
 
     private static void RegisterFloatEntry<TMapped>(WrappedConfigEntry<float, TMapped> entry, FloatRange range)

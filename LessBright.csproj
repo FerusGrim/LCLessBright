@@ -10,10 +10,10 @@
         <FileVersion>1.1.0</FileVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <OutputPath>bin\</OutputPath>
+        <OutputPath>bin\</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <OutputPath>bin\</OutputPath>
+        <OutputPath>bin\</OutputPath>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony">

@@ -49,8 +49,11 @@ public class PlayerControllerBPatches
 
         // Position
         var transform = localFlashlight.transform;
-        var localPosition = new Vector3(Configs.PosOffsetX, Configs.PosOffsetY, Configs.PosOffsetZ);
-        var localRotation = Quaternion.Euler(Configs.RotOffsetX, Configs.RotOffsetY, Configs.RotOffsetZ);
+        var localPosition = new Vector3(Configs.OffsetX, Configs.OffsetY, Configs.OffsetZ);
+
+        // I realize that traditionally, X is pitch and Y is yaw. However, in Unity X is yaw and Y is pitch.
+        // Thus, the values here must be swapped.
+        var localRotation = Quaternion.Euler(Configs.Yaw, Configs.Pitch, 0);
         transform.SetLocalPositionAndRotation(localPosition, localRotation);
     }
 
