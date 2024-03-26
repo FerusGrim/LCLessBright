@@ -1,5 +1,4 @@
-using BepInEx.Configuration;
-using LessBright.Utils;
+using LessBright.Config;
 using LethalConfig.ConfigItems;
 using LethalConfig.ConfigItems.Options;
 using static LethalConfig.LethalConfigManager;
@@ -10,47 +9,36 @@ internal static class LethalConfigIntegration
 {
     public static void Initialize()
     {
-        RegistryButtonEntry("Actions", "Toggle Light", "Manually toggle the light", () => { Compat.ThirdPartyToggleTriggered = true; });
+        RegisterButtonEntry("Actions", "Toggle Light", "Manually toggle the light", () => { Compat.ThirdPartyToggleTriggered = true; });
 
-        RegisterFloatEntry(Configs.Intensity!.Entry, Configs.Min.Intensity, Configs.Max.Intensity,
-            Configs.Step.Intensity);
-        RegisterFloatEntry(Configs.SpotAngle!.Entry, Configs.Min.SpotAngle, Configs.Max.SpotAngle,
-            Configs.Step.SpotAngle);
-        RegisterFloatEntry(Configs.InnerSpotAngle!.Entry, Configs.Min.InnerSpotAngle, Configs.Max.InnerSpotAngle,
-            Configs.Step.InnerSpotAngle);
-        RegisterFloatEntry(Configs.BounceIntensity!.Entry, Configs.Min.BounceIntensity, Configs.Max.BounceIntensity,
-            Configs.Step.BounceIntensity);
-        RegisterEnumEntry(Configs.ShadowType!.Entry);
-        RegisterFloatEntry(Configs.ShadowStrength!.Entry, Configs.Min.ShadowStrength, Configs.Max.ShadowStrength,
-            Configs.Step.ShadowStrength);
-        RegisterEnumEntry(Configs.Color!.Entry);
-        RegisterFloatEntry(Configs.OffsetX!.Entry, Configs.Min.OffsetX, Configs.Max.OffsetX, Configs.Step.OffsetX);
-        RegisterFloatEntry(Configs.OffsetY!.Entry, Configs.Min.OffsetY, Configs.Max.OffsetY, Configs.Step.OffsetY);
-        RegisterFloatEntry(Configs.OffsetZ!.Entry, Configs.Min.OffsetZ, Configs.Max.OffsetZ, Configs.Step.OffsetZ);
+        // Basic
+        RegisterFloatEntry(Configs.Intensity, Ranges.Intensity);
+        RegisterFloatEntry(Configs.Range, Ranges.Range);
+        RegisterFloatEntry(Configs.SpotAngle, Ranges.SpotAngle);
+        RegisterTextEntry(Configs.Color);
+
+        // Positioning
+        RegisterFloatEntry(Configs.PosOffsetX, Ranges.PosOffsetX);
+        RegisterFloatEntry(Configs.PosOffsetY, Ranges.PosOffsetY);
+        RegisterFloatEntry(Configs.PosOffsetZ, Ranges.PosOffsetZ);
+        RegisterFloatEntry(Configs.RotOffsetX, Ranges.RotOffsetX);
+        RegisterFloatEntry(Configs.RotOffsetY, Ranges.RotOffsetY);
+        RegisterFloatEntry(Configs.RotOffsetZ, Ranges.RotOffsetZ);
     }
 
-    private static void RegistryButtonEntry(string section, string name, string description,
+    private static void RegisterButtonEntry(string section, string name, string description,
         GenericButtonOptions.GenericButtonHandler handler)
     {
         AddConfigItem(new GenericButtonConfigItem(section, name, description, name, handler));
     }
 
-    private static void RegisterFloatEntry(ConfigEntry<float> entry, float min, float max, float step)
+    private static void RegisterTextEntry<TMapped>(WrappedConfigEntry<string, TMapped> entry)
     {
-        AddConfigItem(new FloatStepSliderConfigItem(entry, new FloatStepSliderOptions
-        {
-            RequiresRestart = false,
-            Min = min,
-            Max = max,
-            Step = step
-        }));
+        AddConfigItem(entry.ToTextConfigItem());
     }
 
-    private static void RegisterEnumEntry<T>(ConfigEntry<T> entry) where T : Enum
+    private static void RegisterFloatEntry<TMapped>(WrappedConfigEntry<float, TMapped> entry, FloatRange range)
     {
-        AddConfigItem(new EnumDropDownConfigItem<T>(entry, new EnumDropDownOptions
-        {
-            RequiresRestart = false
-        }));
+        AddConfigItem(entry.ToFloatConfigItem(range.Min, range.Max, range.Step));
     }
 }

@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using GameNetcodeStuff;
 using HarmonyLib;
+using LessBright.Config;
 using LessBright.Integrations;
 using LessBright.Utils;
 using UnityEngine;
@@ -40,15 +41,17 @@ public class PlayerControllerBPatches
             localFlashlight.enabled = nextState;
         }
 
-        localFlashlight.intensity = Configs.Intensity!.GetValue();
-        localFlashlight.spotAngle = Configs.SpotAngle!.GetValue();
-        localFlashlight.innerSpotAngle = Configs.InnerSpotAngle!.GetValue();
-        localFlashlight.bounceIntensity = Configs.BounceIntensity!.GetValue();
-        localFlashlight.shadows = Configs.ShadowType!.GetValue();
-        localFlashlight.shadowStrength = Configs.ShadowStrength!.GetValue();
-        localFlashlight.color = Configs.TranslateColor();
+        // Basic
+        localFlashlight.intensity = Configs.Intensity;
+        localFlashlight.range = Configs.Range;
+        localFlashlight.spotAngle = Configs.SpotAngle;
+        localFlashlight.color = Configs.Color;
 
-        localFlashlight.transform.localPosition = new Vector3(Configs.OffsetX!.GetValue(), Configs.OffsetY!.GetValue(), Configs.OffsetZ!.GetValue());
+        // Position
+        var transform = localFlashlight.transform;
+        var localPosition = new Vector3(Configs.PosOffsetX, Configs.PosOffsetY, Configs.PosOffsetZ);
+        var localRotation = Quaternion.Euler(Configs.RotOffsetX, Configs.RotOffsetY, Configs.RotOffsetZ);
+        transform.SetLocalPositionAndRotation(localPosition, localRotation);
     }
 
     private static Light GetFlashlightComponent(PlayerControllerB controller)
@@ -65,7 +68,6 @@ public class PlayerControllerBPatches
         transform.rotation = Quaternion.LookRotation(controller.playerEye.transform.forward);
 
         localFlashlight.type = LightType.Spot;
-        localFlashlight.range = 100_000F;
         localFlashlight.enabled = true;
 
         flashlight = localFlashlight;
