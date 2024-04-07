@@ -16,7 +16,8 @@ First, create a file called `deploy.props` in the root of the project. This file
 </Project>
 ```
 
-Change `DeployDest` to wherever you want the .dll to be copied to. Whether you use r2modman or steam, just make sure it reaches a BepInEx plugins folder.
+Change `DeployDest` to wherever you want the .dll to be copied to. Whether you use r2modman or steam, just make sure it reaches a BepInEx plugins
+folder.
 
 Launch the game using your preferred method.
 

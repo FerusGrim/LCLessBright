@@ -1,5 +1,7 @@
 using BepInEx;
+using BepInEx.Bootstrap;
 using HarmonyLib;
+using LessBright.Behaviors;
 using LessBright.Integrations;
 using LessBright.Patches;
 using LessBright.Utils;
@@ -16,9 +18,12 @@ public class LessBrightPlugin : BaseUnityPlugin
     private void Awake()
     {
         LessBright.Config = Config;
+        LessBright.PlayerState = gameObject.AddComponent<PlayerState>();
 
-        if (Compat.LethalConfig) LethalConfigIntegration.Initialize();
+        if (Chainloader.PluginInfos.ContainsKey(Metadata.Dependencies.LethalConfig))
+            LethalConfigIntegration.Initialize();
 
         _harmony.PatchAll(typeof(PlayerControllerBPatches));
+        _harmony.PatchAll(typeof(TimeOfDayPatches));
     }
 }

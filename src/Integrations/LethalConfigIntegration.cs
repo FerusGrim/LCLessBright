@@ -1,6 +1,4 @@
 using LessBright.Config;
-using LethalConfig.ConfigItems;
-using LethalConfig.ConfigItems.Options;
 using static LethalConfig.LethalConfigManager;
 
 namespace LessBright.Integrations;
@@ -9,40 +7,18 @@ internal static class LethalConfigIntegration
 {
     public static void Initialize()
     {
-        RegisterButtonEntry("Actions", "Toggle Light", "Manually toggle the light", () => { Compat.ThirdPartyToggleTriggered = true; });
+        AddConfigItem(Configs.Flashlight.Intensity.ToConfigItem(Ranges.Flashlight.Intensity));
+        AddConfigItem(Configs.Flashlight.Range.ToConfigItem(Ranges.Flashlight.Range));
+        AddConfigItem(Configs.Flashlight.Spread.ToConfigItem(Ranges.Flashlight.Spread));
+        AddConfigItem(Configs.Flashlight.Color.ToConfigItem());
+        AddConfigItem(Configs.Flashlight.OffsetX.ToConfigItem(Ranges.Flashlight.OffsetX));
+        AddConfigItem(Configs.Flashlight.OffsetY.ToConfigItem(Ranges.Flashlight.OffsetY));
+        AddConfigItem(Configs.Flashlight.OffsetZ.ToConfigItem(Ranges.Flashlight.OffsetZ));
+        AddConfigItem(Configs.Flashlight.Pitch.ToConfigItem(Ranges.Flashlight.Pitch));
+        AddConfigItem(Configs.Flashlight.Yaw.ToConfigItem(Ranges.Flashlight.Yaw));
 
-        // Basic
-        RegisterIntEntry(Configs.Intensity, Ranges.Intensity);
-        RegisterIntEntry(Configs.Range, Ranges.Range);
-        RegisterIntEntry(Configs.SpotAngle, Ranges.SpotAngle);
-        RegisterTextEntry(Configs.Color);
-
-        // Positioning
-        RegisterFloatEntry(Configs.OffsetX, Ranges.OffsetX);
-        RegisterFloatEntry(Configs.OffsetY, Ranges.OffsetY);
-        RegisterFloatEntry(Configs.OffsetZ, Ranges.OffsetZ);
-        RegisterIntEntry(Configs.Pitch, Ranges.Pitch);
-        RegisterIntEntry(Configs.Yaw, Ranges.Yaw);
-    }
-
-    private static void RegisterButtonEntry(string section, string name, string description,
-        GenericButtonOptions.GenericButtonHandler handler)
-    {
-        AddConfigItem(new GenericButtonConfigItem(section, name, description, name, handler));
-    }
-
-    private static void RegisterTextEntry<TMapped>(WrappedConfigEntry<string, TMapped> entry)
-    {
-        AddConfigItem(entry.ToTextConfigItem());
-    }
-
-    private static void RegisterIntEntry<TMapped>(WrappedConfigEntry<int, TMapped> entry, IntRange range)
-    {
-        AddConfigItem(entry.ToIntConfigItem(range.Min, range.Max));
-    }
-
-    private static void RegisterFloatEntry<TMapped>(WrappedConfigEntry<float, TMapped> entry, FloatRange range)
-    {
-        AddConfigItem(entry.ToFloatConfigItem(range.Min, range.Max, range.Step));
+        AddConfigItem(Configs.Sun.InsideIntensity.ToConfigItem(Ranges.Sun.InsideIntensity));
+        AddConfigItem(Configs.Sun.EnablePositionOverride.ToConfigItem());
+        AddConfigItem(Configs.Sun.PositionOverride.ToConfigItem(Ranges.Sun.PositionOverride));
     }
 }
